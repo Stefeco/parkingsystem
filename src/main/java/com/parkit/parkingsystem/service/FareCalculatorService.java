@@ -13,7 +13,7 @@ public class FareCalculatorService {
         }
 
 
-        //TODO: Some tests are failing here. Need to check if this logic is correct
+        //Some tests are failing here. Need to check if this logic is correct
         
         long duration = Duration.between(ticket.getOutTime(), ticket.getInTime()).abs().getSeconds();
         if(duration  < Fare.RATE_THIRTY_MINUTES * 3600) {

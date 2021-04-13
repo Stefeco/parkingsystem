@@ -19,6 +19,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -63,8 +65,8 @@ public class ParkingDataBaseIT {
         try {
         	Ticket ticket = ticketDAO.getTicket("ABCDEF");
         	assertThat(ticket).isNotNull();
-        	assertThat(ticket).isNotEqualTo(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR));
-        	assertThat(ticket).isEqualTo(parkingSpotDAO.getNextAvailableSlot(ParkingType.BIKE));
+        	assertNotEquals(1,parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR));
+        	assertEquals(2,parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR));
         	assertThat(ticket).isNotEqualTo(ticket.isDiscountPrice());
         	ticket.setInTime(LocalDateTime.now().minusHours(2));
         	ticketDAO.updateTicketITTest(ticket);
@@ -72,13 +74,15 @@ public class ParkingDataBaseIT {
         	
         	//same vehicle comes back
         	parkingService.processIncomingVehicle();
-        	Ticket ticketBack = ticketDAO.getTicket("ABCDEF");
-        	assertThat(ticket).isEqualTo(ticket.isDiscountPrice());
+        	Ticket ticket2 = ticketDAO.getTicket("ABCDEF");
+        	assertThat(ticket2.isDiscountPrice()).isEqualTo(true);
         	ticket.setOutTime(LocalDateTime.now().plusHours(1));
-        	ticketDAO.updateTicket(ticketBack);
-        	
-        	fareCalculatorService.calculateFare(ticketBack);//created new static in class attributes
-        	ticketDAO.updateTicket(ticketBack);
+        	ticketDAO.updateTicketITTest(ticket2);
+        	//parkingService.processExitingVehicle();
+
+        	//calcul fare
+        	fareCalculatorService.calculateFare(ticket2);//created new static in class attributes
+        	ticketDAO.updateTicketITTest(ticket2);
         }
         catch(Exception e) {
         	e.printStackTrace();
@@ -95,7 +99,7 @@ public class ParkingDataBaseIT {
     public void testParkingLotExit(){
         testParkingACar();
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        //parkingService.processExitingVehicle();
+        parkingService.processExitingVehicle();
         try {
         	Ticket ticket = ticketDAO.getTicket("ABCDEF");
         	assertThat(ticket.getPrice()).isNotNull();

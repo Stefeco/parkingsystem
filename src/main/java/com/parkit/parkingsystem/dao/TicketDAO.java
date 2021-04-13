@@ -65,11 +65,13 @@ public class TicketDAO {
                 ticket.setId(rs.getInt(2));
                 ticket.setVehicleRegNumber(vehicleRegNumber);
                 ticket.setPrice(rs.getDouble(3));
-                ticket.setInTime(rs.getTimestamp(5).toLocalDateTime());//ERROR!
+                ticket.setReturningUser(returningUser(vehicleRegNumber));//added for it test - as the user comes back and has the same vehicle number he becomes returningUser
+                ticket.setInTime(rs.getTimestamp(5).toLocalDateTime());
                 ticket.setOutTime((rs.getTimestamp(6) == null)
                 	? null
-                	: rs.getTimestamp(6).toLocalDateTime());//stef -> ERROR with nullpointer exception
-                ticket.setDiscountPrice(rs.getBoolean(8));
+                	: rs.getTimestamp(6).toLocalDateTime());
+                ticket.setDiscountPrice(rs.getBoolean(8));//stef not working on ITests because the rs returns a discountPrice = false (wrong ticket).
+                
                 
                 
             }
@@ -136,7 +138,7 @@ public class TicketDAO {
     		con = dataBaseConfig.getConnection();
     		ps = con.prepareStatement(
     				DBConstants.TestRequestIT);
-    		ps.setTimestamp(1, Timestamp.valueOf(ticket.getOutTime()));
+    		ps.setTimestamp(1, Timestamp.valueOf(ticket.getInTime()));
     		ps.setInt(2, ticket.getId());
     		ps.execute();
     	} catch(Exception e) {

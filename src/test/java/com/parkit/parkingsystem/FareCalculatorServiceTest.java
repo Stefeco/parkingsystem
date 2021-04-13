@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
@@ -151,7 +152,7 @@ public class FareCalculatorServiceTest {
     	ticket.setParkingSpot(parkingSpot);
     	ticket.setDiscountPrice(true);
     	fareCalculatorService.calculateFare(ticket);
-    	assertThat(ticket.getPrice()).isEqualTo(4.275);
+    	assertThat(ticket.getPrice()).isEqualTo(4.275,within(0.2));
     }
     
 /*
