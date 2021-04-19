@@ -32,8 +32,6 @@ public class ParkingDataBaseIT {
     private static ParkingSpotDAO parkingSpotDAO;
     private static TicketDAO ticketDAO;
     private static DataBasePrepareService dataBasePrepareService;
-    private static FareCalculatorService fareCalculatorService;
-
     @Mock
     private static InputReaderUtil inputReaderUtil;
 
@@ -74,15 +72,15 @@ public class ParkingDataBaseIT {
         	
         	//same vehicle comes back
         	parkingService.processIncomingVehicle();
-        	Ticket ticket2 = ticketDAO.getTicket("ABCDEF");
-        	assertThat(ticket2.isDiscountPrice()).isEqualTo(true);
+        	ticket = ticketDAO.getTicket("ABCDEF");
+        	assertThat(ticket.isDiscountPrice()).isEqualTo(true);
         	ticket.setOutTime(LocalDateTime.now().plusHours(1));
-        	ticketDAO.updateTicketITTest(ticket2);
-        	//parkingService.processExitingVehicle();
+        	ticketDAO.updateTicketITTest(ticket);
 
         	//calcul fare
-        	fareCalculatorService.calculateFare(ticket2);//created new static in class attributes
-        	ticketDAO.updateTicketITTest(ticket2);
+        	FareCalculatorService farecalculatorTest = new FareCalculatorService();
+        	farecalculatorTest.calculateFare(ticket);//created new static in class attributes
+        	ticketDAO.updateTicketITTest(ticket);
         }
         catch(Exception e) {
         	e.printStackTrace();
@@ -114,4 +112,5 @@ public class ParkingDataBaseIT {
         }
     }
 }
+
 

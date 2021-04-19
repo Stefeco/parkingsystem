@@ -54,7 +54,7 @@ public class TicketDAO {
         try {
             con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(DBConstants.GET_TICKET);
-            //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
+            //PARKING_NUMBER, (max)ID, PRICE, RETURNING_USER, IN_TIME, OUT_TIME, p.TYPE, ISDISCOUNTPRICE)
             ps.setString(1,vehicleRegNumber);
    			
             ResultSet rs = ps.executeQuery();
@@ -65,12 +65,14 @@ public class TicketDAO {
                 ticket.setId(rs.getInt(2));
                 ticket.setVehicleRegNumber(vehicleRegNumber);
                 ticket.setPrice(rs.getDouble(3));
-                ticket.setReturningUser(returningUser(vehicleRegNumber));//added for it test - as the user comes back and has the same vehicle number he becomes returningUser
+                ticket.setReturningUser(rs.getBoolean(4));
+                System.out.println(rs.getBoolean(4));// returningUser(vehicleRegNumber));//added for it test - as the user comes back and has the same vehicle number he becomes returningUser
                 ticket.setInTime(rs.getTimestamp(5).toLocalDateTime());
                 ticket.setOutTime((rs.getTimestamp(6) == null)
                 	? null
                 	: rs.getTimestamp(6).toLocalDateTime());
                 ticket.setDiscountPrice(rs.getBoolean(8));//stef not working on ITests because the rs returns a discountPrice = false (wrong ticket).
+                System.out.println(rs.getBoolean(8));
                 
                 
                 
@@ -150,5 +152,5 @@ public class TicketDAO {
     	}
     	return false;
     }
-    	
+
 }
