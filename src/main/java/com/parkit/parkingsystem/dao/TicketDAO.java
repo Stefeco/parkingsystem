@@ -31,14 +31,14 @@ public class TicketDAO {
             ps.setInt(1,ticket.getParkingSpot().getId());
             ps.setString(2, ticket.getVehicleRegNumber());
             ps.setDouble(3, ticket.getPrice());
-            ps.setBoolean(4, ticket.isReturningUser());//before it was "false"
+            ps.setBoolean(4, ticket.isReturningUser());
             ps.setTimestamp(5, Timestamp.valueOf(ticket.getInTime()));
             ps.setTimestamp(6, null); 
             //		(ticket.getOutTime() == null
             //		?null
             //		:Timestamp.valueOf(ticket.getOutTime())));
             ps.setBoolean(7, ticket.isDiscountPrice());
-            return ps.execute();//error!
+            return ps.execute();
         }catch (Exception ex){
             logger.error("Error fetching next available slot",ex);
         }finally {
@@ -47,7 +47,7 @@ public class TicketDAO {
         }
     }
 
-    @SuppressWarnings("finally")//stef - added SuppressWarnings to remove the finally warning
+    @SuppressWarnings("finally")
 	public Ticket getTicket(String vehicleRegNumber) {
         Connection con = null;
         Ticket ticket = null;
@@ -66,13 +66,12 @@ public class TicketDAO {
                 ticket.setVehicleRegNumber(vehicleRegNumber);
                 ticket.setPrice(rs.getDouble(3));
                 ticket.setReturningUser(rs.getBoolean(4));
-                System.out.println(rs.getBoolean(4));// returningUser(vehicleRegNumber));//added for it test - as the user comes back and has the same vehicle number he becomes returningUser
                 ticket.setInTime(rs.getTimestamp(5).toLocalDateTime());
                 ticket.setOutTime((rs.getTimestamp(6) == null)
                 	? null
                 	: rs.getTimestamp(6).toLocalDateTime());
                 ticket.setDiscountPrice(rs.getBoolean(8));//stef not working on ITests because the rs returns a discountPrice = false (wrong ticket).
-                System.out.println(rs.getBoolean(8));
+                //System.out.println(rs.getBoolean(8));
                 
                 
                 
@@ -145,7 +144,6 @@ public class TicketDAO {
     		ps.execute();
     	} catch(Exception e) {
     		e.printStackTrace();
-    		//Logger.error ("Error saving ticket info", e);
     	} finally {
     		dataBaseConfig.closeConnection(con);
     		dataBaseConfig.closePreparedStatement(ps);

@@ -201,7 +201,7 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<suiteXmlFiles>testng.xml</suiteXmlFiles>
+				<!-- <suiteXmlFiles>testng.xml</suiteXmlFiles> -->
 					<excludes>
 						<exclude>**/*IT.java</exclude>
 					</excludes>
