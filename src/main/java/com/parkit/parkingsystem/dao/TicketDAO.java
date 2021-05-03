@@ -70,7 +70,7 @@ public class TicketDAO {
                 ticket.setOutTime((rs.getTimestamp(6) == null)
                 	? null
                 	: rs.getTimestamp(6).toLocalDateTime());
-                ticket.setDiscountPrice(rs.getBoolean(8));//stef not working on ITests because the rs returns a discountPrice = false (wrong ticket).
+                ticket.setDiscountPrice(rs.getBoolean(8));
                 //System.out.println(rs.getBoolean(8));
                 
                 

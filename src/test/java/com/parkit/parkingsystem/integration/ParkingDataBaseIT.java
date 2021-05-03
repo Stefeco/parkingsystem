@@ -72,7 +72,7 @@ public class ParkingDataBaseIT {
         	
         	//same vehicle comes back
         	parkingService.processIncomingVehicle();
-        	ticket = ticketDAO.getTicket("ABCDEF");
+        	ticket = ticketDAO.getTicket("ABCDEF");//stef :  outtime is null!
         	assertThat(ticket.isDiscountPrice()).isEqualTo(true);
         	ticket.setOutTime(LocalDateTime.now().plusHours(1));
         	ticketDAO.updateTicketITTest(ticket);

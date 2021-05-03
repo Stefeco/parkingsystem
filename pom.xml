@@ -100,6 +100,13 @@
 				<artifactId>maven-surefire-report-plugin</artifactId>
 				<version>2.19.1</version>
 			</plugin>
+			<plugin>
+				<!-- FindBugs Plugin looks for bugs in Java programs. It is based on 
+					the concept of bug patterns. -->
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>3.0.4</version>
+			</plugin>
 		</plugins>
 	</reporting>
 
@@ -201,7 +208,7 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-				<!-- <suiteXmlFiles>testng.xml</suiteXmlFiles> -->
+					<!-- <suiteXmlFiles>testng.xml</suiteXmlFiles> -->
 					<excludes>
 						<exclude>**/*IT.java</exclude>
 					</excludes>
